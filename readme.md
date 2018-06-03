@@ -27,6 +27,6 @@ php artisan users
 php artisan transfers
 
 
-#transer money
+#transfer money
 php artisan transfer FROM_USERID  TO_USERID  SUMM
 ```
