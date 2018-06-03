@@ -5,6 +5,9 @@ namespace App\Console\Commands;
 use App\Models\Transer;
 use App\References\TransferReference;
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Helper\TableCell;
+use Symfony\Component\Console\Helper\TableSeparator;
 
 class TransfersList extends Command
 {
@@ -19,21 +22,28 @@ class TransfersList extends Command
         $cnt = count($trnsfs);
 
         if (!$cnt) {
-            echo 'No transfers yet...';
+            $this->info('No transfers yet...');
             exit;
         }
 
-        echo '-------------------------------------------- transferslist' . "\n";
-        echo 'date' . "\t" . 'from' . "\t" . 'to' . "\t" . 'amount' . "\t" . 'status' . "\n";
+        $table = new Table($this->output);
+        $table->setHeaders([
+            'date', 'from', 'to', 'amount', 'status'
+        ]);
+
         /** @var Transer $trnsf */
         foreach ($trnsfs as $trnsf) {
-            echo $trnsf->created_at . "\t"
-                . object_get($trnsf, 'from_user.name') . "\t"
-                . object_get($trnsf, 'from_user.name') . "\t"
-                . $trnsf->amount . "\t"
-                . TransferReference::STATUSES[$trnsf->status] . "\n";
+            $table->addRow([
+                $trnsf->created_at,
+                object_get($trnsf, 'from_user.name'),
+                object_get($trnsf, 'to_user.name'),
+                $trnsf->amount,
+                array_get(TransferReference::STATUSES, $trnsf->status)
+            ]);
         }
-        echo '--------------------------------------------- (' . $cnt . ")\n";
+        $table->addRow(new TableSeparator());
+        $table->addRow([new TableCell('Total transfers: ' . $cnt, ['colspan' => 5])]);
+        $table->render();
 
     }
 }

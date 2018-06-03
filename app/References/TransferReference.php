@@ -9,7 +9,7 @@ class TransferReference
     const RULES = [
         'from_user_id' => 'required|exists:users,id',
         'to_user_id' => 'required|exists:users,id',
-        'amount' => 'required|numeric|min:0',
+        'amount' => 'required|numeric|min:0.01',
         'status' => 'nullable|integer|min:0',
         'error_msg' => 'nullable|string',
     ];

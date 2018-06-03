@@ -4,6 +4,9 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Helper\TableCell;
+use Symfony\Component\Console\Helper\TableSeparator;
 
 class UserList extends Command
 {
@@ -17,19 +20,27 @@ class UserList extends Command
         $cnt = count($users);
 
         if (!$cnt) {
-            echo 'No users yet...';
+            $this->info( 'No users yet...');
             exit;
         }
 
-        echo '-------------------------------------------- userlist' . "\n";
-        echo 'id' . "\t" . 'name' . "\t\t\t" . 'balance' . "\n";
+        $table = new Table($this->output);
+        $table->setHeaders([
+            'id', 'name', 'balance'
+        ]);
+
+
         /** @var User $user */
         foreach ($users as $user) {
-            echo $user->id . "\t"
-                . $user->name . "\t\t\t"
-                . $user->balance . "\n";
+            $table->addRow([
+                $user->id,
+                $user->name,
+                $user->balance]);
         }
-        echo '--------------------------------------------- (' . $cnt . ")\n";
+
+        $table->addRow(new TableSeparator());
+        $table->addRow([new TableCell('Total users: ' . $cnt, ['colspan' => 3])]);
+        $table->render();
     }
 
 }

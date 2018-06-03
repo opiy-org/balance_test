@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         UserList::class,
         Transfer::class,
+        Transfer::class
     ];
 
     /**
