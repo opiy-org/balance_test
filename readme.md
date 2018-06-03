@@ -21,10 +21,10 @@ Usage
 
 ```
 #list all users
-php artian users
+php artisan users
 
 #list all transfers
-php artian transfers
+php artisan transfers
 
 
 #transer money
