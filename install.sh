@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
 cp .env.example .env
-php artisan key:generate
 
 composer install
 composer dump-autoload
+
+php artisan key:generate
 
 php artisan migrate --force
 php artisan db:seed --force
